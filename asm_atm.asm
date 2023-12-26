@@ -3,7 +3,7 @@
 
 .DATA
     id DW 1
-    password DW 1
+    password DW 7
     balance DB '20000 $'
     added_deposit_t DB '21000 $'
     added_deposit_tt DB '22000 $'
