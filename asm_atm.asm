@@ -5,12 +5,12 @@
     id DW 1
     password DW 7
     balance DB '20000 $'
-    added_deposit_t DB '21000 $'
-    added_deposit_tt DB '22000 $'
-    added_deposit_ttt DB '24000 $'
-    withdraw_balance_t DB '19000 $'
-    withdraw_balance_tt DB '18000 $'
-    withdraw_balance_ttt DB '16000 $'
+    added_deposit_one DB '21000 $'
+    added_deposit_two DB '22000 $'
+    added_deposit_three DB '24000 $'
+    withdraw_balance_one DB '19000 $'
+    withdraw_balance_two DB '18000 $'
+    withdraw_balance_three DB '16000 $'
     user_id DB ?
     user_password DB ?
     operation DB ?
@@ -191,30 +191,31 @@ DEPOSIT:
     MOV AH, 09H
     LEA DX, NEWLINE 
     INT 21H
-    SUB AL, '0'
-    MOV added, AL
-    CMP added, 1
-    MOV AH,09H
-    LEA DX, NEWLINE 
-    INT 21
     MOV AH, 09H
      LEA DX, SHOW_BALANCE_MSG
      INT 21H
     SUB AL, '0'
     MOV added, AL
     CMP added, 1
-     MOV AH, 09H
-    LEA DX, added_deposit_t 
-    INT 21H
-    JMP EXIT_ATM
+    JE ONE
     CMP added, 2
-    MOV AH, 09H
-    LEA DX,added_deposit_tt
+    JE TWO
+    CMP added, 3
+    JE THREE
+ONE:
+     MOV AH, 09H
+     LEA DX, added_deposit_one 
     INT 21H
     JMP EXIT_ATM
-    CMP added, 3
+    
+TWO:
+    MOV AH, 09H
+    LEA DX,added_deposit_two
+    INT 21H
+    JMP EXIT_ATM
+THREE:
      MOV AH, 09H
-     LEA DX, added_deposit_ttt
+     LEA DX, added_deposit_three
      INT 21H
      JMP EXIT_ATM
  WITHDRAW:
@@ -224,26 +225,27 @@ DEPOSIT:
     SUB AL, '0'
     MOV added, AL
     CMP added, 1
-    MOV AH,09H
-    LEA DX, NEWLINE 
-    INT 21
-    SUB AL, '0'
-    MOV added, AL
-    CMP added, 1
-     MOV AH, 09H
-    LEA DX, withdraw_balance_t
-    INT 21H
-    JMP EXIT_ATM
+    JE ONESUB
     CMP added, 2
-    MOV AH, 09H
-    LEA DX, withdraw_balance_tt
+    JE TWOSUB
+    CMP added, 3
+    JE THREESUB
+    
+ONESUB:
+     MOV AH, 09H
+    LEA DX, withdraw_balance_one
     INT 21H
     JMP EXIT_ATM
-    CMP added, 3
+    
+TWOSUB:
+    MOV AH, 09H
+    LEA DX, withdraw_balance_two
+    INT 21H
+    JMP EXIT_ATM
+THREESUB:
      MOV AH, 09H
-     LEA DX, withdraw_balance_ttt
+     LEA DX, withdraw_balance_three
      INT 21H
-
     JMP EXIT_ATM
 EXIT_ATM:
     MOV AH, 09H
